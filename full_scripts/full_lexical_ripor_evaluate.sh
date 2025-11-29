@@ -350,7 +350,6 @@ elif [ $task = "lexical_constrained_retrieve_and_rerank" ]; then
             --out_dir=$out_dir \
             --lex_out_dir=$lex_out_dir \
             --task=$task \
-            --docid_to_tokenids_path=$docid_to_tokenids_path \
             --q_collection_paths=$q_collection_paths \
             --batch_size=8 \
             --topk=$lex_topk \
@@ -382,7 +381,6 @@ elif [ $task = "lexical_constrained_retrieve_and_rerank" ]; then
             --out_dir=$smt_out_dir \
             --lex_out_dir=$lex_out_dir \
             --task="$task"_2 \
-            --docid_to_tokenids_path=$docid_to_tokenids_path \
             --q_collection_paths=$q_collection_paths \
             --batch_size=16 \
             --topk=$topk \
@@ -669,6 +667,8 @@ elif [ $task = "lexical_ripor_for_dense_pretrained_retrieve_and_rerank_for_train
     out_dir=$lex_out_dir/MSMARCO_TRAIN/
     q_collection_path=./data/msmarco-full/all_train_queries/train_queries
 
+
+    #torchrun --nproc_per_node=4 -m t5_pretrainer.rerank \
     python -m torch.distributed.launch --nproc_per_node=4 -m t5_pretrainer.rerank \
         --task=rerank_for_create_trainset \
         --run_json_path=$run_path \

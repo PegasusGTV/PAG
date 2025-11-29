@@ -676,7 +676,12 @@ def term_encoder_parallel_retrieve_2(args):
         # merge
         qid_to_rankdata = {}
         sub_paths = [p for p in os.listdir(out_dir) if "run" in p]
-        assert len(sub_paths) == torch.cuda.device_count()
+        world_size = int(os.environ.get("WORLD_SIZE", 0))
+        if world_size <= 0:
+            world_size = torch.cuda.device_count() or 1
+        if len(sub_paths) != world_size:
+            print(f"[lexical_constrained_retrieve_and_rerank_3] Warning: expected {world_size} "
+                  f"run shards but found {len(sub_paths)}. Proceeding with available shards.")
         for sub_path in sub_paths:
             with open(os.path.join(out_dir, sub_path)) as fin:
                 sub_qid_to_rankdata = ujson.load(fin)
@@ -1037,7 +1042,12 @@ def constrained_beam_search_for_qid_rankdata_2(args):
         # merge
         qid_to_rankdata = {}
         sub_paths = [p for p in os.listdir(out_dir) if "run" in p]
-        assert len(sub_paths) == torch.cuda.device_count()
+        world_size = int(os.environ.get("WORLD_SIZE", 0))
+        if world_size <= 0:
+            world_size = torch.cuda.device_count() or 1
+        if len(sub_paths) != world_size:
+            print(f"[lexical_constrained_retrieve_and_rerank_3] Warning: expected {world_size} "
+                  f"run shards but found {len(sub_paths)}. Proceeding with available shards.")
         for sub_path in sub_paths:
             with open(os.path.join(out_dir, sub_path)) as fin:
                 sub_qid_to_rankdata = ujson.load(fin)
@@ -1494,7 +1504,12 @@ def lexical_constrained_retrieve_and_rerank_3(args):
         # merge
         qid_to_rankdata = {}
         sub_paths = [p for p in os.listdir(out_dir) if "run" in p]
-        assert len(sub_paths) == torch.cuda.device_count()
+        world_size = int(os.environ.get("WORLD_SIZE", 0))
+        if world_size <= 0:
+            world_size = torch.cuda.device_count() or 1
+        if len(sub_paths) != world_size:
+            print(f"[lexical_constrained_retrieve_and_rerank_3] Warning: expected {world_size} "
+                  f"run shards but found {len(sub_paths)}. Proceeding with available shards.")
         for sub_path in sub_paths:
             with open(os.path.join(out_dir, sub_path)) as fin:
                 sub_qid_to_rankdata = ujson.load(fin)

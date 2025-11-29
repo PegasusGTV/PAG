@@ -1,7 +1,11 @@
-# customized
+# customized project ignores
 wandb/
 data/
 sbatch_jobs/
+experiments-full-lexical-ripor/
+experiments-splade/
+msmarco/
+msmarco-full/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
